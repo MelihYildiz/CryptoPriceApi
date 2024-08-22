@@ -5,11 +5,11 @@ public class CryptoSymbol
     public int Id { get; set; }
 
     [Required]
-    [ValidSymbol] // Sembol için özel doğrulama
+    [ValidSymbol] 
     public string Symbol { get; set; }
 
     [Required]
-    [ValidName] // Name için özel doğrulama
+    [ValidName] 
     public string Name { get; set; }
 
     public decimal Price { get; set; }

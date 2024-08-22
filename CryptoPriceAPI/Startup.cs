@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
-using StackExchange.Redis; // Burayı ekleyin
+using StackExchange.Redis;
 using CryptoPriceAPI.Repositories;
 
 namespace CryptoPriceAPI
@@ -21,7 +21,7 @@ namespace CryptoPriceAPI
 
         public IConfiguration Configuration { get; }
 
-        // Bu metod, hizmetleri konteynıra ekler
+        // Bu metod, hizmetleri containere ekler
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();

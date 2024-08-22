@@ -2,38 +2,41 @@
 
 namespace CryptoPriceAPI
 {
+    // Veritabanı ile etkileşim sağlar
     public class CryptoDbContext : DbContext
     {
+        // DbContext seçeneklerini alır
         public CryptoDbContext(DbContextOptions<CryptoDbContext> options) : base(options) { }
 
+        // Db'deki CryptoSymbols tablosu
         public DbSet<CryptoSymbol> CryptoSymbols { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // CryptoSymbol varlık konfigürasyonları
             modelBuilder.Entity<CryptoSymbol>()
                 .Property(s => s.Symbol)
-                .IsRequired() // Symbol is required
-                .HasMaxLength(4); // Symbol can be a maximum of 4 characters
+                .IsRequired() 
+                .HasMaxLength(4); 
 
             modelBuilder.Entity<CryptoSymbol>()
                 .Property(s => s.Name)
-                .IsRequired() // Name is required
-                .HasMaxLength(25); // Name can be a maximum of 25 characters
+                .IsRequired() 
+                .HasMaxLength(25);
 
-            // Ensure uniqueness for Symbol
+            // Symbol alanı için benzersizliği kontrol eder.
             modelBuilder.Entity<CryptoSymbol>()
                 .HasIndex(s => s.Symbol)
-                .IsUnique(); // Symbol must be unique
+                .IsUnique(); 
         }
     }
 
+    //Veritabanı tablosunun yapısını temsil eder
     public class CryptoSymbol
     {
         public int Id { get; set; }
-
-        // Enforced constraints via Fluent API
         public string Symbol { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
