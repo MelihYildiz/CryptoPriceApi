@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DTMEYILDIZ\\source\\repos\\CryptoPriceAPI\\CryptoPriceAPI\\CryptoPriceAPI.csproj": {}
+    "C:\\Users\\bjk19\\Source\\Repos\\MelihYildiz\\CryptoPriceApi\\CryptoPriceAPI\\CryptoPriceAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DTMEYILDIZ\\source\\repos\\CryptoPriceAPI\\CryptoPriceAPI\\CryptoPriceAPI.csproj": {
+    "C:\\Users\\bjk19\\Source\\Repos\\MelihYildiz\\CryptoPriceApi\\CryptoPriceAPI\\CryptoPriceAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DTMEYILDIZ\\source\\repos\\CryptoPriceAPI\\CryptoPriceAPI\\CryptoPriceAPI.csproj",
+        "projectUniqueName": "C:\\Users\\bjk19\\Source\\Repos\\MelihYildiz\\CryptoPriceApi\\CryptoPriceAPI\\CryptoPriceAPI.csproj",
         "projectName": "CryptoPriceAPI",
-        "projectPath": "C:\\Users\\DTMEYILDIZ\\source\\repos\\CryptoPriceAPI\\CryptoPriceAPI\\CryptoPriceAPI.csproj",
-        "packagesPath": "C:\\Users\\DTMEYILDIZ\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DTMEYILDIZ\\source\\repos\\CryptoPriceAPI\\CryptoPriceAPI\\obj\\",
+        "projectPath": "C:\\Users\\bjk19\\Source\\Repos\\MelihYildiz\\CryptoPriceApi\\CryptoPriceAPI\\CryptoPriceAPI.csproj",
+        "packagesPath": "C:\\Users\\bjk19\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bjk19\\Source\\Repos\\MelihYildiz\\CryptoPriceApi\\CryptoPriceAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DTMEYILDIZ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bjk19\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +35,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -60,9 +66,17 @@
               "target": "Package",
               "version": "[5.0.10, )"
             },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.10, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.8.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -75,7 +89,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -87,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

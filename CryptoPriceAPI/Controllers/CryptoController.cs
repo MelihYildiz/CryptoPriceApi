@@ -1,52 +1,69 @@
-﻿using CryptoPriceAPI;
+﻿using CryptoPriceAPI.DTOs;
+using CryptoPriceAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class CryptoController : ControllerBase
+namespace CryptoPriceAPI.Controllers
 {
-    private readonly CryptoDbContext _context;
-
-    public CryptoController(CryptoDbContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CryptoController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ICryptoRepository _cryptoRepository;
 
-    [HttpGet("symbols")]
-    public async Task<IActionResult> GetSymbols()
-    {
-        var symbols = await _context.CryptoSymbols.ToListAsync();
-        return Ok(symbols);
-    }
-
-    [HttpGet("{cryptoSymbol}")]
-    public async Task<IActionResult> GetPrice(string cryptoSymbol)
-    {
-        var symbol = await _context.CryptoSymbols
-            .FirstOrDefaultAsync(c => c.Symbol.Equals(cryptoSymbol, StringComparison.OrdinalIgnoreCase));
-        if (symbol == null)
+        public CryptoController(ICryptoRepository cryptoRepository)
         {
-            return NotFound();
+            _cryptoRepository = cryptoRepository;
         }
 
-        var randomPrice = new Random().Next(1000, 10000); // Örnek fiyat
-        return Ok(new { symbol = symbol.Symbol, price = $"{randomPrice} USD" });
-    }
-
-    [HttpPost("add")]
-    public async Task<IActionResult> AddSymbol([FromBody] CryptoSymbol newSymbol)
-    {
-        if (await _context.CryptoSymbols.AnyAsync(c => c.Symbol == newSymbol.Symbol))
-        {
-            return Conflict("Symbol already exists.");
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CryptoSymbolDTO>>> Get()
+        { 
+            var symbols = await _cryptoRepository.GetAllSymbolsAsync();
+            return Ok(symbols);
         }
 
-        _context.CryptoSymbols.Add(newSymbol);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetPrice), new { cryptoSymbol = newSymbol.Symbol }, newSymbol);
+        [HttpGet("{symbol}")]
+        public async Task<ActionResult<CryptoSymbolDTO>> Get(string symbol)
+        {
+            var cryptoSymbol = await _cryptoRepository.GetSymbolByNameAsync(symbol);
+            if (cryptoSymbol == null)
+            {
+                return NotFound();
+            }
+            return Ok(cryptoSymbol);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] CryptoSymbolDTO newSymbolDTO)
+        {
+            if (newSymbolDTO == null)
+            {
+                return BadRequest();
+            }
+
+            await _cryptoRepository.AddSymbolAsync(newSymbolDTO);
+            return CreatedAtAction(nameof(Get), new { symbol = newSymbolDTO.Symbol }, newSymbolDTO);
+        }
+
+        [HttpPut("{symbol}")]
+        public async Task<ActionResult> Put(string symbol, [FromBody] CryptoSymbolDTO updatedSymbolDTO)
+        {
+            if (symbol != updatedSymbolDTO.Symbol)
+            {
+                return BadRequest();
+            }
+
+            await _cryptoRepository.UpdateSymbolAsync(updatedSymbolDTO);
+            return NoContent();
+        }
+
+        [HttpDelete("{symbol}")]
+        public async Task<ActionResult> Delete(string symbol)
+        {
+            await _cryptoRepository.DeleteSymbolAsync(symbol);
+            return NoContent();
+        }
     }
 }

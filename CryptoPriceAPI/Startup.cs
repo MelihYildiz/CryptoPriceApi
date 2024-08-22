@@ -1,16 +1,14 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using StackExchange.Redis; // Burayı ekleyin
+using CryptoPriceAPI.Repositories;
 
 namespace CryptoPriceAPI
 {
@@ -23,14 +21,35 @@ namespace CryptoPriceAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Bu metod, hizmetleri konteynıra ekler
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<CryptoDbContext>(options =>
-        options.UseSqlServer("Data Source=(localdb)\\SQLEXPRESS; Initial Catalog=CryptoPriceDb; Integrated Security=FALSE; User ID=<user>; password=<password>"));
 
-            // CORS ayarlar�
+            // DbContext yapılandırması
+            services.AddDbContext<CryptoDbContext>(options =>
+                options.UseSqlServer("Server=localhost,1433;Database=my_database;User Id=sa;Password=YourStrong!Passw0rd;"));
+
+            // Repository yapılandırması
+            services.AddScoped<ICryptoRepository, CryptoRepository>();
+
+            // Redis yapılandırması
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetSection("Redis:Configuration").Value;
+            });
+
+            // IConnectionMultiplexer yapılandırması
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var configuration = Configuration.GetSection("Redis:Configuration").Value;
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
+            // RedisCacheService'i ekleyin
+            services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
+            // CORS yapılandırması
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -41,13 +60,14 @@ namespace CryptoPriceAPI
                 });
             });
 
+            // Swagger yapılandırması
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoPriceAPI", Version = "v1" });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Bu metod, HTTP istek boru hattını yapılandırır
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -59,7 +79,7 @@ namespace CryptoPriceAPI
 
             app.UseRouting();
 
-            // CORS'u ekleyin
+            // CORS yapılandırması
             app.UseCors("AllowAll");
 
             app.UseAuthorization();
@@ -69,6 +89,5 @@ namespace CryptoPriceAPI
                 endpoints.MapControllers();
             });
         }
-
     }
 }

@@ -23,4 +23,4 @@ namespace CryptoPriceAPI
                     webBuilder.UseStartup<Startup>();
                 });
     }
-}
+} //
