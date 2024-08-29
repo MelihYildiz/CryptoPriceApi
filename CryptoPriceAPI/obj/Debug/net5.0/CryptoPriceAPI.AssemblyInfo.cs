@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CryptoPriceAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3395d6798f8ff78d2b8f67f9e1591ba97bce44b1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2eb55fc67b7834692b4b2112e9ab49a8615d59c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CryptoPriceAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CryptoPriceAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
